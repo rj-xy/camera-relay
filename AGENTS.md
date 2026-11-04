@@ -9,7 +9,7 @@ This repo is public. Never commit sensitive data to it.
 
 `camera-relay`: a Rust app that turns a real Linux camera into a PipeWire virtual webcam with a tray icon, live picture adjustments, cropping and per-app profiles. Read [README.md](README.md), then [docs/architecture.md](docs/architecture.md) (pipeline, config, milestones) and [docs/language-choice.md](docs/language-choice.md).
 
-**Status: skeleton.** `src/main.rs` is a stub. The working code is the shell-script relay in [legacy-relay/](legacy-relay/); its [README](legacy-relay/README.md) lists hardware gotchas that the Rust pipeline must keep (read it before touching the pipeline).
+**Status: M0 to M7 built.** The app runs the pipeline, a tray icon, a GTK4 settings window (tabs: Picture, Framing, Plugins) with live preview, a D-Bus service and the CLI, with profiles, plugins, start on login, `update` and GitHub releases. Modules: `model` (plain data), `config` (generic TOML stores), `pipeline` (generic GStreamer relay), `plugins` (plugin catalog and the built-in elements), `controller` (state, ties them together, notifies listeners), `tray` (generic StatusNotifierItem), `icon` (the tray icon, drawn in code), `settings` (the GTK window), `ui` (main-thread glue for tray and window), `autostart`, `update`, `dbus`, `cli`, `daemon`, `logging`. Only the GLib main thread touches GTK or the tray: other threads send a `UiEvent`. The shell-script relay in [legacy-relay/](legacy-relay/) is what this app replaces; its [README](legacy-relay/README.md) lists hardware gotchas that the Rust pipeline must keep (read it before touching the pipeline). Docs for users and contributors: [docs/plugins.md](docs/plugins.md), [docs/contributing.md](docs/contributing.md).
 
 ## Stack
 

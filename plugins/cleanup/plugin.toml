@@ -1,0 +1,13 @@
+# Bundled with camera-relay. Format: docs/plugins.md
+name = "Clean up"
+description = "Takes the grain out of a dark picture. Still areas are averaged over frames; movement shows at once."
+pipeline = "camerarelaydenoise name=denoise"
+
+[[settings]]
+key = "strength"
+label = "Strength"
+element = "denoise"
+property = "strength"
+min = 0.0
+max = 1.0
+default = 0.5

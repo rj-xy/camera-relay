@@ -1,9 +1,32 @@
 [package]
 name = "camera-relay"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2024"
 description = "A virtual webcam for Linux with a tray icon, live picture adjustments and per-app profiles"
 license = "MIT"
 repository = "https://github.com/rj-xy/camera-relay"
 
 [dependencies]
+anyhow = "1"
+async-channel = "2"
+clap = { version = "4", features = ["derive"] }
+gstreamer = "0.25"
+glib-unix = "0.22"
+gstreamer-app = "0.25"
+gstreamer-base = "0.25"
+gstreamer-video = "0.25"
+libc = "0.2"
+gtk4 = { version = "0.11", features = ["v4_14"] }
+ksni = { version = "0.3", default-features = false, features = ["async-io", "blocking"] }
+serde = { version = "1", features = ["derive"] }
+toml = "1"
+tracing = "0.1"
+tracing-journald = "0.3"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+zbus = "6"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+strip = true

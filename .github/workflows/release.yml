@@ -1,0 +1,46 @@
+# Push a tag that matches Cargo.toml's version (v0.1.0) to test, build and publish a release.
+# install.sh and `camera-relay update` download the assets it publishes.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: ci
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Tag matches Cargo.toml
+        run: |
+          version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          if [[ "v$version" != "$GITHUB_REF_NAME" ]]; then
+            echo "🔴 Tag $GITHUB_REF_NAME, but Cargo.toml says $version"
+            exit 1
+          fi
+      - name: System packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends pkg-config libgtk-4-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      # Built on Ubuntu 24.04, so it runs on glibc 2.39 and GTK 4.14 or newer.
+      - run: cargo build --release --locked
+      - name: Package
+        run: |
+          asset=camera-relay-x86_64-linux.tar.gz
+          mkdir dist
+          tar -czf "dist/$asset" -C target/release camera-relay -C "$GITHUB_WORKSPACE" LICENSE README.md
+          (cd dist && sha256sum "$asset" > "$asset.sha256")
+          cp install.sh dist/
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --generate-notes

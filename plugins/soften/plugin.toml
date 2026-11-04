@@ -1,0 +1,13 @@
+# Bundled with camera-relay. Format: docs/plugins.md
+name = "Soften"
+description = "A gentle blur of the brightness, for smoother skin. Colour stays sharp."
+pipeline = "camerarelaysoften name=soften"
+
+[[settings]]
+key = "amount"
+label = "Amount"
+element = "soften"
+property = "amount"
+min = 0.0
+max = 1.0
+default = 0.3
