@@ -1,0 +1,9 @@
+[package]
+name = "camera-relay"
+version = "0.0.0"
+edition = "2024"
+description = "A virtual webcam for Linux with a tray icon, live picture adjustments and per-app profiles"
+license = "MIT"
+repository = "https://github.com/rj-xy/camera-relay"
+
+[dependencies]

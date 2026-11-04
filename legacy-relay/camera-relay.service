@@ -1,0 +1,11 @@
+[Unit]
+Description=Built-in camera relay (libcamera full-res -> PipeWire camera "Built-in Camera" at 1280x720)
+# Works around a libcamera crash in the ov08x40 1928x1088 binned mode: we always
+# read the full-res mode (2560x1440 output) and scale down here. The PipeWire node
+# has one fixed format, which Chromium needs (it skips cameras that only list size ranges).
+
+[Service]
+Environment=LIBCAMERA_SIMPLE_TUNING_FILE=%h/.config/camera-relay/ov08x40.yaml
+ExecStart=/usr/bin/gst-launch-1.0 -e libcamerasrc saturation=1.3 ! video/x-raw,width=2560,height=1440 ! videoconvertscale n-threads=4 ! video/x-raw,format=YUY2,width=1280,height=720,framerate=30/1 ! pipewiresink mode=provide client-name=camera-relay 'stream-properties="props,media.class=Video/Source,media.role=Camera,node.name=camera-relay,node.description=\"Built-in Camera\""'
+Restart=on-failure
+RestartSec=2

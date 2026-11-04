@@ -1,0 +1,19 @@
+%YAML 1.1
+---
+# libcamera soft-ISP tuning for the ov08x40 on a Dell XPS 14 DA14260.
+# Used by camera-relay.service via LIBCAMERA_SIMPLE_TUNING_FILE. Tuned by eye in the
+# office on 2026-11-04 (uncalibrated.yaml left a yellow-green cast: B about 13 % low).
+version: 1
+algorithms:
+  - BlackLevel:
+      blackLevel: 4096   # ov08x40: 64 at 10 bit, in libcamera's 16-bit scale
+  - Awb:
+  - Ccm:                 # diagonal only: cuts green, lifts blue; also makes saturation work
+      ccms:
+        - ct: 6500
+          ccm: [ 1.0, 0,    0,
+                 0,   0.92, 0,
+                 0,   0,    1.28 ]
+  - Adjust:
+  - Agc:
+...

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Camera Relay (on/off)
+Comment=Turn the built-in camera on or off for browsers and video calls
+Exec=camera-relay toggle
+Icon=camera-web
+Terminal=false
+Categories=AudioVideo;Video;

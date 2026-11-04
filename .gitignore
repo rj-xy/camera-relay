@@ -1,0 +1,8 @@
+/target
+*.log
+*.mp4
+*.mkv
+*.raw
+*.yuv
+.DS_Store
+*~
